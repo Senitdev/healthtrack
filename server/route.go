@@ -14,5 +14,8 @@ func SetUpRoute(db *gorm.DB) *gin.Engine {
 	//Routes Pressure
 	handler.ParamRoutesPressureMeasure(r, db)
 	//Routes weight
+	handler.ParamRoutesWeight(r, db)
+	//Routes user
+	handler.ParamRoutesUser(r, db)
 	return r
 }

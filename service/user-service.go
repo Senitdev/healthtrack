@@ -3,6 +3,7 @@ package service
 import (
 	"healthtrack/entity"
 	"healthtrack/repository"
+	"time"
 )
 
 type UserService interface {
@@ -49,6 +50,7 @@ func (u *userService) GetUserById(id int) (entity.User, error) {
 
 // Save implements UserService.
 func (u *userService) Save(user entity.User) entity.User {
+	user.CreatedAt = time.Now()
 	u.service.Save(user)
 	return user
 }

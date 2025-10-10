@@ -12,7 +12,7 @@ import (
 )
 
 func ParamRoutesPressureMeasure(cx *gin.Engine, db *gorm.DB) {
-	r := cx.Group("/api")
+	r := cx.Group("/api/v1")
 	pressureRepo := repository.NewPressureRepository(db)
 	pressureService := service.NewPressureService(pressureRepo)
 	pressureController := controller.NewPressureMeasureController(pressureService)
