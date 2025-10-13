@@ -27,7 +27,7 @@ func (w *weightRepository) DeleteById(id int) error {
 // GetWeightMesureByUser implements WeightRepository.
 func (w *weightRepository) GetWeightMesureByUser(userid int) ([]entity.WeightMeasurement, error) {
 	var weightmesure []entity.WeightMeasurement
-	if result := w.DB.Where("user_id", userid).Find(&weightmesure).Error; result != nil {
+	if result := w.DB.Where("user_id=?", userid).Find(&weightmesure).Error; result != nil {
 		return weightmesure, result
 	}
 	return weightmesure, nil

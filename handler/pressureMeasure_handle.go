@@ -19,9 +19,6 @@ func ParamRoutesPressureMeasure(cx *gin.Engine, db *gorm.DB) {
 	//POST
 	r.POST("/pressure", func(ctx *gin.Context) {
 		ctx.JSON(200, pressureController.Save(ctx))
-		if ctx.Errors != nil {
-			ctx.JSON(http.StatusBadGateway, gin.H{"Erreur": ""})
-		}
 	})
 	//GET
 	r.GET("/pressure/:userId", func(ctx *gin.Context) {

@@ -3,6 +3,7 @@ package service
 import (
 	"healthtrack/entity"
 	"healthtrack/repository"
+	"time"
 )
 
 type WeightService interface {
@@ -35,6 +36,9 @@ func (w *weightservice) GetWeightMesureByUser(userid int) ([]entity.WeightMeasur
 
 // Save implements WeightService.
 func (w *weightservice) Save(weightMeasurement entity.WeightMeasurement) entity.WeightMeasurement {
+	weightMeasurement.TakenAt = time.Now()
+	weightMeasurement.CreatedAt = time.Now()
+	weightMeasurement.UpdatedAt = time.Now()
 	w.service.Save(weightMeasurement)
 	return weightMeasurement
 }

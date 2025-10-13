@@ -16,7 +16,7 @@ func ParamRoutesWeight(cx *gin.Engine, db *gorm.DB) {
 	weightService := service.NewWeightService(weighRepo)
 	weightController := controller.NewWeightController(weightService)
 
-	r := cx.Group("/api")
+	r := cx.Group("/api/v1")
 	r.POST("/weight", func(ctx *gin.Context) {
 		ctx.JSON(200, weightController.Save(ctx))
 		if ctx.Errors != nil {

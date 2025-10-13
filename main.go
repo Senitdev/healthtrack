@@ -11,6 +11,7 @@ func main() {
 	db.Connect()
 	//server.SetUpRoute(db.DB)
 	r := server.SetUpRoute(db.DB)
+
 	port := os.Getenv("API_PORT")
 	if port == "" {
 		port = "8090"
