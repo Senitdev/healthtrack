@@ -51,5 +51,17 @@ func ParamRoutesUser(ct *gin.Engine, db *gorm.DB) {
 		}
 		ctx.JSON(200, user)
 	})
+	//Delete user BY ID
+	r.DELETE("/user/:id", func(ctx *gin.Context) {
+		id := ctx.Param("id")
+		ids, err := strconv.Atoi(id)
+		if err != nil {
+			ctx.JSON(http.StatusBadRequest, gin.H{"ID manquant ou inconnu": ids})
+			return
+		}
+		userController.DeleteById(ids)
+		ctx.JSON(http.StatusOK, gin.H{"User supprimer avec succes": ids})
+
+	})
 
 }

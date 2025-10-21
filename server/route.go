@@ -29,5 +29,9 @@ func SetUpRoute(db *gorm.DB) *gin.Engine {
 	handler.ParamRoutesWeight(r, db)
 	//Routes user
 	handler.ParamRoutesUser(r, db)
+	//Route Login
+	handler.ParamLogin(r, db)
+	//Route auth
+	handler.ParamLogin2(r, db)
 	return r
 }
