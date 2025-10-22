@@ -2,6 +2,7 @@ package handler
 
 import (
 	"healthtrack/controller"
+	"healthtrack/midllewares"
 	"healthtrack/repository"
 	"healthtrack/service"
 	"net/http"
@@ -12,10 +13,12 @@ import (
 )
 
 func ParamRoutesGlucoseMeaure(cx *gin.Engine, db *gorm.DB) {
-	r := cx.Group("/api/v1")
+
 	glucoseMeasureRepo := repository.NewGlucoseRepository(db)
 	glucoseMeasureService := service.NewGlucoseService(glucoseMeasureRepo)
 	glucoseMeasureController := controller.NewGlucoseMeasureController(glucoseMeasureService)
+	//On protege la route
+	r := cx.Group("/api/v1", midllewares.AuthorizeJWT())
 	//Save glucose measure
 	r.POST("/glucose", func(ctx *gin.Context) {
 		ctx.JSON(200, glucoseMeasureController.Save(ctx))

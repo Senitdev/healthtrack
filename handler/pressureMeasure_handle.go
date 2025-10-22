@@ -2,6 +2,7 @@ package handler
 
 import (
 	"healthtrack/controller"
+	"healthtrack/midllewares"
 	"healthtrack/repository"
 	"healthtrack/service"
 	"net/http"
@@ -12,7 +13,8 @@ import (
 )
 
 func ParamRoutesPressureMeasure(cx *gin.Engine, db *gorm.DB) {
-	r := cx.Group("/api/v1")
+	//On protege la route
+	r := cx.Group("/api/v1", midllewares.AuthorizeJWT())
 	pressureRepo := repository.NewPressureRepository(db)
 	pressureService := service.NewPressureService(pressureRepo)
 	pressureController := controller.NewPressureMeasureController(pressureService)

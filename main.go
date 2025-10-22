@@ -17,6 +17,5 @@ func main() {
 		port = "8090"
 	}
 	r.Run(":" + port)
-	fmt.Printf("Server Runing at port % s", port)
-	r.Run(port)
+	fmt.Printf("Server Running at port %s", port)
 }

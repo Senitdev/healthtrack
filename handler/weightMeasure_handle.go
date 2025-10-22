@@ -2,6 +2,7 @@ package handler
 
 import (
 	"healthtrack/controller"
+	"healthtrack/midllewares"
 	"healthtrack/repository"
 	"healthtrack/service"
 	"net/http"
@@ -15,8 +16,8 @@ func ParamRoutesWeight(cx *gin.Engine, db *gorm.DB) {
 	weighRepo := repository.NewWeightRepository(db)
 	weightService := service.NewWeightService(weighRepo)
 	weightController := controller.NewWeightController(weightService)
-
-	r := cx.Group("/api/v1")
+	//On protege la route
+	r := cx.Group("/api/v1", midllewares.AuthorizeJWT())
 	r.POST("/weight", func(ctx *gin.Context) {
 		ctx.JSON(200, weightController.Save(ctx))
 		if ctx.Errors != nil {

@@ -21,6 +21,7 @@ func ParamLogin2(ctx *gin.Engine, db *gorm.DB) {
 		token := login2controller.Login(ctx)
 		if token == "" {
 			ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Authentication failed"})
+			return
 		} else {
 			ctx.JSON(http.StatusOK, gin.H{"token": token})
 		}

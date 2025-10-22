@@ -1,18 +1,21 @@
 package test
 
 import (
-	"healthtrack/server"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/gin-gonic/gin"
 	"github.com/stretchr/testify/require"
-	"gorm.io/gorm"
 )
 
+func SetupRouter() *gin.Engine {
+	r := gin.Default()
+	return r
+}
+
 func TestGlucose(t *testing.T) {
-	var db *gorm.DB
-	router := server.SetUpRoute(db)
+	router := SetupRouter()
 	t.Run("Add glucose", func(t *testing.T) {
 		want := "Client 1"
 		got := "Client 1"
@@ -22,7 +25,7 @@ func TestGlucose(t *testing.T) {
 	})
 	t.Run("Get glucose by User", func(t *testing.T) {
 		//simuler une requete
-		req := httptest.NewRequest(http.MethodGet, "/glucose/1", nil)
+		req := httptest.NewRequest("GET", "/api/v1/glucose/1", nil)
 		w := httptest.NewRecorder()
 		//creer une serveur pour
 		router.ServeHTTP(w, req)
