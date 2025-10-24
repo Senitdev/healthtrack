@@ -1,5 +1,5 @@
-module healthtrack
 
+module healthtrack
 go 1.25.1
 
 require gorm.io/gorm v1.31.0
