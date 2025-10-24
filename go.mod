@@ -1,9 +1,7 @@
 
 module healthtrack
-go 1.25.1
-
+go 1.25.0
 require gorm.io/gorm v1.31.0
-
 require (
 	github.com/bytedance/sonic v1.14.0 // indirect
 	github.com/bytedance/sonic/loader v0.3.0 // indirect
