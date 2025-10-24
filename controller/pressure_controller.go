@@ -10,7 +10,7 @@ import (
 type PressureMeasureController interface {
 	Save(ctx *gin.Context) entity.PressureMeasurement
 	Update(ctx *gin.Context, id int) (entity.PressureMeasurement, error)
-	GetAllByUser(userId int) ([]entity.PressureMeasurement, error)
+	GetAllByUser(username string) ([]entity.PressureMeasurement, error)
 	DeleteById(id int) error
 }
 type pressureMeasureController struct {
@@ -27,9 +27,9 @@ func (p *pressureMeasureController) DeleteById(id int) error {
 }
 
 // GetAllByUser implements PressureMeasureController.
-func (p *pressureMeasureController) GetAllByUser(userId int) ([]entity.PressureMeasurement, error) {
+func (p *pressureMeasureController) GetAllByUser(username string) ([]entity.PressureMeasurement, error) {
 	var pressureMeasure []entity.PressureMeasurement
-	pressureMeasure, err := p.controller.GetPressureByUser(userId)
+	pressureMeasure, err := p.controller.GetPressureByUser(username)
 	if err != nil {
 		return pressureMeasure, err
 	}

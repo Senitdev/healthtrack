@@ -23,14 +23,13 @@ func ParamRoutesGlucoseMeaure(cx *gin.Engine, db *gorm.DB) {
 	r.POST("/glucose", func(ctx *gin.Context) {
 		ctx.JSON(200, glucoseMeasureController.Save(ctx))
 	})
-	r.GET("/glucose/:userId", func(ctx *gin.Context) {
-		userId := ctx.Param("userId")
-		ids, err := strconv.Atoi(userId)
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"Error": "ID invalid"})
+	r.GET("/glucose/:username", func(ctx *gin.Context) {
+		username := ctx.Param("username")
+		if username == "" {
+			ctx.JSON(http.StatusBadRequest, gin.H{"Error": "Username invalid"})
 		}
-		gluceMeasure := glucoseMeasureController.GetGluseMeasureAll(ids)
-		ctx.JSON(200, gluceMeasure)
+		glucoseMeasure := glucoseMeasureController.GetGluseMeasureAll(username)
+		ctx.JSON(200, glucoseMeasure)
 
 	})
 	r.DELETE("/glucose/:id", func(ctx *gin.Context) {

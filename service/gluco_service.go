@@ -8,7 +8,7 @@ import (
 
 type GlucoseService interface {
 	Save(glucoseMesure entity.GlucoseMeasurement) entity.GlucoseMeasurement
-	FindByUser(userid int) ([]entity.GlucoseMeasurement, error)
+	FindByUser(username string) ([]entity.GlucoseMeasurement, error)
 	DeleteById(id int) error
 	//Update(glucoseMesure entity.GlucoseMeasurement) (entity.GlucoseMeasurement, error)
 }
@@ -26,10 +26,10 @@ func (g *glucoseService) DeleteById(id int) error {
 }
 
 // FindByUser implements GlucoseService.
-func (g *glucoseService) FindByUser(userid int) ([]entity.GlucoseMeasurement, error) {
+func (g *glucoseService) FindByUser(username string) ([]entity.GlucoseMeasurement, error) {
 	var glucoseMeasure []entity.GlucoseMeasurement
 
-	glucoseMeasure, err := g.service.GetGlucoseAllByUser(userid)
+	glucoseMeasure, err := g.service.GetGlucoseAllByUser(username)
 	if err != nil {
 		return glucoseMeasure, err
 	}
@@ -44,7 +44,6 @@ func (g *glucoseService) Save(glucoseMesure entity.GlucoseMeasurement) entity.Gl
 	g.service.Save(glucoseMesure)
 	return glucoseMesure
 }
-
 func NewGlucoseService(repo repository.GlucoseRepository) GlucoseService {
 	return &glucoseService{
 		service: repo,

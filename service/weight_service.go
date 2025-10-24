@@ -8,7 +8,7 @@ import (
 
 type WeightService interface {
 	Save(weightMeasurement entity.WeightMeasurement) entity.WeightMeasurement
-	GetWeightMesureByUser(userid int) ([]entity.WeightMeasurement, error)
+	GetWeightMesureByUser(username string) ([]entity.WeightMeasurement, error)
 	DeleteById(id int) error
 	UpdateWeightMesurement(weight entity.WeightMeasurement, id int) (entity.WeightMeasurement, error)
 }
@@ -25,9 +25,9 @@ func (w *weightservice) DeleteById(id int) error {
 }
 
 // GetWeightMesureByUser implements WeightService.
-func (w *weightservice) GetWeightMesureByUser(userid int) ([]entity.WeightMeasurement, error) {
+func (w *weightservice) GetWeightMesureByUser(username string) ([]entity.WeightMeasurement, error) {
 	var weightmeasure []entity.WeightMeasurement
-	weightmeasure, err := w.service.GetWeightMesureByUser(userid)
+	weightmeasure, err := w.service.GetWeightMesureByUser(username)
 	if err != nil {
 		return weightmeasure, err
 	}

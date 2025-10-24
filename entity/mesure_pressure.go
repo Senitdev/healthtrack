@@ -5,6 +5,7 @@ import "time"
 type PressureMeasurement struct {
 	ID         int       `json:"id" gorm:"primaryKey;autoIncrement"`
 	User_id    int       `json:"user_id" gorm:"not nul;index"`
+	Username   string    `json:"username" gorm:"not null"`
 	Systole    int       `json:"systole" gorm:"type:int;not null"`
 	Diastole   int       `json:"diastole" gorm:"type:int;not null"`
 	Pulsion    int       `json:"pulse" gorm:"type:int;not null"`

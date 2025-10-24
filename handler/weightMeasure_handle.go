@@ -25,14 +25,13 @@ func ParamRoutesWeight(cx *gin.Engine, db *gorm.DB) {
 		}
 	})
 	//Retourne le poids d'un User
-	r.GET("/weight/:userId", func(ctx *gin.Context) {
-		idS := ctx.Param("userId")
-		id, err := strconv.Atoi(idS)
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"Id inconnu ou inccorect": id})
+	r.GET("/weight/:username", func(ctx *gin.Context) {
+		username := ctx.Param("username")
+		if username == "" {
+			ctx.JSON(http.StatusBadRequest, gin.H{"username inconnu ou incorrect": username})
 			return
 		}
-		weight := weightController.GetWeightByUser(id)
+		weight := weightController.GetWeightByUser(username)
 		ctx.JSON(200, weight)
 	})
 	//Delete

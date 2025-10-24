@@ -4,7 +4,8 @@ import "time"
 
 type GlucoseMeasurement struct {
 	ID        int       `json:"id" gorm:"primaryKey;autoIncrement"`
-	User_Id   int       `json:"user_id" gorm:"not null;index"`
+	User_id   int       `json:"user_id" gorm:"not null;index"`
+	Username  string    `json:"username" gorm:"not null"`
 	Value     float64   `json:"value" gorm:"type:numeric"`
 	Unite     string    `json:"unite" gorm:"type:text"`
 	Context   string    `json:"context" gorm:"type:text"`

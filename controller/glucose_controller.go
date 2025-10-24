@@ -9,7 +9,7 @@ import (
 
 type GlucoseMeasureController interface {
 	Save(ctx *gin.Context) entity.GlucoseMeasurement
-	GetGluseMeasureAll(userId int) []entity.GlucoseMeasurement
+	GetGluseMeasureAll(username string) []entity.GlucoseMeasurement
 	Update(ctx *gin.Context, id int) entity.GlucoseMeasurement
 	DeleteById(id int) error
 }
@@ -26,9 +26,9 @@ func (g *glucoseMeasureController) DeleteById(id int) error {
 }
 
 // GetGluseMeasureAll implements GlucoseMeasureController.
-func (g *glucoseMeasureController) GetGluseMeasureAll(userId int) []entity.GlucoseMeasurement {
+func (g *glucoseMeasureController) GetGluseMeasureAll(username string) []entity.GlucoseMeasurement {
 	var glucoseMeasure []entity.GlucoseMeasurement
-	glucoseMeasure, err := g.controller.FindByUser(userId)
+	glucoseMeasure, err := g.controller.FindByUser(username)
 	if err != nil {
 		return glucoseMeasure
 	}

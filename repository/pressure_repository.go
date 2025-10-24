@@ -8,7 +8,7 @@ import (
 
 type PressureRepository interface {
 	Save(pressure entity.PressureMeasurement) entity.PressureMeasurement
-	GetPressureByUser(userId int) ([]entity.PressureMeasurement, error)
+	GetPressureByUser(username string) ([]entity.PressureMeasurement, error)
 	DeletePressure(id int) error
 	UpdatePressure(pressure entity.PressureMeasurement, id int) (entity.PressureMeasurement, error)
 }
@@ -25,9 +25,14 @@ func (p *pressureRepository) DeletePressure(id int) error {
 }
 
 // GetPressureByUser implements PressureRepository.
-func (p *pressureRepository) GetPressureByUser(userId int) ([]entity.PressureMeasurement, error) {
+func (p *pressureRepository) GetPressureByUser(username string) ([]entity.PressureMeasurement, error) {
 	var pressure []entity.PressureMeasurement
-	if err := p.DB.Where("user_id", userId).Find(&pressure).Error; err != nil {
+	//je recupere le ID de l'user a partir de son username
+	var userId int
+	if err := p.DB.Table("users").Where("username = ?", username).Select("id").Scan(&userId).Error; err != nil {
+		return nil, err
+	}
+	if err := p.DB.Where("user_id = ?", userId).Find(&pressure).Error; err != nil {
 		return nil, err
 	}
 	return pressure, nil
@@ -35,6 +40,11 @@ func (p *pressureRepository) GetPressureByUser(userId int) ([]entity.PressureMea
 
 // Save implements PressureRepository.
 func (p *pressureRepository) Save(pressure entity.PressureMeasurement) entity.PressureMeasurement {
+	var userId int
+	if err := p.DB.Table("users").Where("username = ?", pressure.Username).Select("id").Scan(&userId).Error; err != nil {
+		return pressure
+	}
+	pressure.User_id = userId
 	p.DB.Save(&pressure)
 	return pressure
 }

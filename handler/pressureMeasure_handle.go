@@ -23,14 +23,13 @@ func ParamRoutesPressureMeasure(cx *gin.Engine, db *gorm.DB) {
 		ctx.JSON(200, pressureController.Save(ctx))
 	})
 	//GET
-	r.GET("/pressure/:userId", func(ctx *gin.Context) {
-		ids := ctx.Param("userId")
-		userId, err := strconv.Atoi(ids)
-		if err != nil {
-			ctx.JSON(http.StatusBadRequest, gin.H{"Id inconnu ou innexistant": userId})
+	r.GET("/pressure/:username", func(ctx *gin.Context) {
+		username := ctx.Param("username")
+		if username == "" {
+			ctx.JSON(http.StatusBadRequest, gin.H{"username inconnu ou innexistant": username})
 			return
 		}
-		pressure, err := pressureController.GetAllByUser(userId)
+		pressure, err := pressureController.GetAllByUser(username)
 		if err != nil {
 			ctx.JSON(http.StatusBadRequest, "")
 			return

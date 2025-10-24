@@ -8,7 +8,7 @@ import (
 
 type GlucoseRepository interface {
 	Save(glucoseMesure entity.GlucoseMeasurement) entity.GlucoseMeasurement
-	GetGlucoseAllByUser(userId int) ([]entity.GlucoseMeasurement, error)
+	GetGlucoseAllByUser(username string) ([]entity.GlucoseMeasurement, error)
 	DeleteById(id int) error
 }
 
@@ -26,9 +26,14 @@ func (g *glucoseRepository) DeleteById(id int) error {
 }
 
 // GetGlucoseAllByUser implements GlucoseRepository.
-func (g *glucoseRepository) GetGlucoseAllByUser(userId int) ([]entity.GlucoseMeasurement, error) {
+func (g *glucoseRepository) GetGlucoseAllByUser(username string) ([]entity.GlucoseMeasurement, error) {
 	var glucoseMeasure []entity.GlucoseMeasurement
-	if err := g.BD.Where("user_id = ?", userId).Find(&glucoseMeasure).Error; err != nil {
+	//je recupere le ID de l'user a partir de son username
+	var userId int
+	if err := g.BD.Table("users").Where("username = ?", username).Select("id").Scan(&userId).Error; err != nil {
+		return nil, err
+	}
+	if err := g.BD.Where("user_id= ?", userId).Find(&glucoseMeasure).Error; err != nil {
 		return nil, err
 	}
 	return glucoseMeasure, nil
@@ -36,6 +41,11 @@ func (g *glucoseRepository) GetGlucoseAllByUser(userId int) ([]entity.GlucoseMea
 
 // Save implements GlucoseRepository.
 func (g *glucoseRepository) Save(glucoseMesure entity.GlucoseMeasurement) entity.GlucoseMeasurement {
+	var userId int
+	if err := g.BD.Table("users").Where("username = ?", glucoseMesure.Username).Select("id").Scan(&userId).Error; err != nil {
+		return glucoseMesure
+	}
+	glucoseMesure.User_id = userId
 	g.BD.Save(&glucoseMesure)
 	return glucoseMesure
 }

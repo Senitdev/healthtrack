@@ -9,7 +9,7 @@ import (
 
 type WeightMeasureController interface {
 	Save(ctx *gin.Context) entity.WeightMeasurement
-	GetWeightByUser(userId int) []entity.WeightMeasurement
+	GetWeightByUser(username string) []entity.WeightMeasurement
 	UpdateWeightMeasure(ctx *gin.Context, id int) entity.WeightMeasurement
 	DeleteWeightMeasureById(id int) error
 }
@@ -26,9 +26,9 @@ func (w *weightMeasure) DeleteWeightMeasureById(id int) error {
 }
 
 // GetWeightByUser implements WeightMeasureController.
-func (w *weightMeasure) GetWeightByUser(userId int) []entity.WeightMeasurement {
+func (w *weightMeasure) GetWeightByUser(username string) []entity.WeightMeasurement {
 	var weightMeasure []entity.WeightMeasurement
-	weightMeasure, err := w.controller.GetWeightMesureByUser(userId)
+	weightMeasure, err := w.controller.GetWeightMesureByUser(username)
 	if err != nil {
 		return weightMeasure
 	}

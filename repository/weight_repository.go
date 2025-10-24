@@ -8,7 +8,7 @@ import (
 
 type WeightRepository interface {
 	Save(WeightMeasurement entity.WeightMeasurement) entity.WeightMeasurement
-	GetWeightMesureByUser(userid int) ([]entity.WeightMeasurement, error)
+	GetWeightMesureByUser(username string) ([]entity.WeightMeasurement, error)
 	DeleteById(id int) error
 	UpdateWeightMesurement(weight entity.WeightMeasurement, id int) (entity.WeightMeasurement, error)
 }
@@ -25,9 +25,13 @@ func (w *weightRepository) DeleteById(id int) error {
 }
 
 // GetWeightMesureByUser implements WeightRepository.
-func (w *weightRepository) GetWeightMesureByUser(userid int) ([]entity.WeightMeasurement, error) {
+func (w *weightRepository) GetWeightMesureByUser(username string) ([]entity.WeightMeasurement, error) {
 	var weightmesure []entity.WeightMeasurement
-	if result := w.DB.Where("user_id=?", userid).Find(&weightmesure).Error; result != nil {
+	var userId int
+	if err := w.DB.Table("users").Where("username = ?", username).Select("id").Scan(&userId).Error; err != nil {
+		return nil, err
+	}
+	if result := w.DB.Where("user_id = ?", userId).Find(&weightmesure).Error; result != nil {
 		return weightmesure, result
 	}
 	return weightmesure, nil
@@ -35,6 +39,11 @@ func (w *weightRepository) GetWeightMesureByUser(userid int) ([]entity.WeightMea
 
 // Save implements WeightRepository.
 func (w *weightRepository) Save(WeightMeasurement entity.WeightMeasurement) entity.WeightMeasurement {
+	var userId int
+	if err := w.DB.Table("users").Where("username = ?", WeightMeasurement.Username).Select("id").Scan(&userId).Error; err != nil {
+		return WeightMeasurement
+	}
+	WeightMeasurement.User_id = userId
 	w.DB.Save(&WeightMeasurement)
 	return WeightMeasurement
 }
