@@ -13,7 +13,7 @@ func SetUpRoute(db *gorm.DB) *gin.Engine {
 	r := gin.Default()
 	//cors config
 	config := cors.Config{
-		AllowOrigins:     []string{"http://localhost:3000"}, // ton front React/Next.js
+		AllowOrigins:     []string{"*"}, // ton front React/Next.js
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
